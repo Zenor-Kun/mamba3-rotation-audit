@@ -6,7 +6,7 @@ Mamba3 Rotation Audit investigates whether Mamba-3's input-dependent complex-rot
 
 This paper is currently under review at ICASSP 2027.
 
-- [ ] **2026.09.16 Release Core Model Definitions.**
+- [ ] **2026.10.15 Release Core Model Definitions.**
 - [ ] **2026.10.21 Release Training and Consistency Verification Code.**
 - [ ] **2026.11.25 Release Diagnostic and Intervention Inference Code.**
 - [ ] **2026.12.30 Release Data Processing Code.**
