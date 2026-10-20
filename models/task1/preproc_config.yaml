@@ -1,0 +1,60 @@
+main_B:
+  hpf: 0.5
+  lpf: 45
+  filter: zero_phase_iir
+  reref: REST
+  asr: false
+  interp_bad: false
+ctrl_A:
+  hpf: 1.0
+  lpf: 40
+  filter: zero_phase_iir
+  reref: REST
+  asr: true
+  interp_bad: true
+fs: 250
+ref_channel_idx: 128
+inject_freq_max: 40
+theta_to_hz: 39.79
+stft_frontend:
+  introduced: task3.5_rebuild_v1_complex_stft
+  window_len: 128
+  hop: 32
+  overlap_frac: 0.75
+  window_fn: hann
+  freq_lo: 0.5
+  freq_hi: 45
+  n_freq_bins: 23
+  n_frames_per_window: 28
+  effective_frame_rate_hz: 7.8125
+  complex: true
+  note: >-
+    theta->Hz mapping recomputed against effective_frame_rate_hz (250/hop) in
+    Probe 2, not finalized here -- this just records the constant it will use.
+stft_frontend_v1_rebuild_hop8:
+  introduced: task3.5_v1_rebuild_no_bigfc_longseq
+  reason: >-
+    V1 on the hop=32/28-frame front-end never cleared chance (0.487 bal_acc)
+    even though a pooled-feature logreg found real signal (AUC 0.588) on the
+    same STFT settings -- suspected cause was the 5888->128 input_proj
+    collapsing frequency+channel structure before any sequence model saw it,
+    compounded by a very short seq_len=28. This block only shrinks the hop
+    (finer time resolution -> longer frame sequence); window_len, freq range,
+    and bin count are unchanged from the original stft_frontend block above.
+  window_len: 128
+  hop: 8
+  overlap_frac: 0.9375
+  window_fn: hann
+  freq_lo: 0.5
+  freq_hi: 45
+  n_freq_bins: 23
+  n_frames_per_window: 110
+  effective_frame_rate_hz: 31.25
+  complex: true
+  note: >-
+    theta->Hz mapping for this front-end (Probe 2, if reused): f = phi *
+    (effective_frame_rate_hz / (2*pi)) = phi * 4.9736. Supersedes nothing --
+    the hop=32 block above is still the record for the original Task 3.5 STFT
+    Probe-1 sweep and its diagnostics; this is a separate, later front-end
+    used only for the V1-only rebuild (no ablation) described in
+    task3_5/STATUS.md.
